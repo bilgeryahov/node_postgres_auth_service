@@ -1,2 +1,3 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
+/node_postgres_auth_service/node_modules
