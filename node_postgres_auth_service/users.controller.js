@@ -82,6 +82,17 @@ module.exports = {
 			})
 			.catch(function (error) {
 
+				if(error.detail && error.detail.includes('already exists')){
+
+					console.log('User already exists!');
+					res
+						.status(400)
+						.json({
+							message: 'User already exists!'
+						});
+					return;
+				}
+
 				// Log the error and return it as a message as well.
 				console.log(error);
 				res
