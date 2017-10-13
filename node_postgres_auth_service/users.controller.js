@@ -2,7 +2,7 @@
  * @file users.controller.js
  *
  * Exposes controller functions for user handling. Such as
- * Login, Register.
+ * Login, Register, JWT token Authentication.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
  * @version 1.0.0
@@ -163,5 +163,49 @@ module.exports = {
 					.status(400)
 					.json(error);
 			});
+	},
+
+	/**
+	 * Attempts authenticating a single user based on a JWT token.
+	 *
+	 * @param req
+	 * @param res
+	 *
+	 * @return void
+	 */
+
+	authenticate(req, res){
+
+		let headerExists = req.headers.authorization;
+		if(headerExists){
+
+			let token = req.headers.authorization.split(' ')[1]; // Authorization: Bearer xxx
+
+			jwt.verify(token, 's3cr3t', function (error) {
+
+				if(error){
+
+					console.log(error);
+					res
+						.status(401)
+						.json({
+							message: 'Unauthorized'
+						});
+					return;
+				}
+
+				res
+					.status(200)
+					.json({
+						message: 'Authorization successful'
+					});
+			});
+
+			return;
+		}
+
+		res
+			.status(403)
+			.json({message: 'No token provided'});
 	}
 };
