@@ -1,0 +1,25 @@
+{
+  "name": "node_postgres_auth_service",
+  "version": "1.0.0",
+  "description": "Authentication service in NodeJS, using PostgreSQL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bilgeryahov/node_postgres_auth_service.git"
+  },
+  "keywords": [
+    "Authentication",
+    "PostgreSQL",
+    "NodeJS",
+    "Service"
+  ],
+  "author": "Bilger Yahov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bilgeryahov/node_postgres_auth_service/issues"
+  },
+  "homepage": "https://github.com/bilgeryahov/node_postgres_auth_service#readme"
+}
