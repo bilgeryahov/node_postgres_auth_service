@@ -30,7 +30,7 @@ router
 // Authenticate an existing user using a JWT token.
 router
 	.route('/users/authenticate')
-	.post(usersController.authenticate());
+	.post(usersController.authenticate);
 
 // Export the router.
 module.exports = router;
