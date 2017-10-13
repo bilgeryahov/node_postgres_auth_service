@@ -51,7 +51,7 @@ module.exports = {
 			res
 				.status(400)
 				.json({
-					message: 'Email, first name, last name and password are required!'
+					message: 'email, first_name, last_name and pass are required!'
 				});
 			return;
 		}
@@ -90,8 +90,78 @@ module.exports = {
 			});
 	},
 
-	login(){
+	/**
+	 * Attempts to login a single user based on email and pass.
+	 *
+	 * @param req
+	 * @param res
+	 *
+	 * @return void
+	 */
 
+	login(req, res){
 
+		// Check if all fields are present.
+		if(!req.body.email || !req.body.pass){
+
+			res
+				.status(400)
+				.json({
+					message: 'email, and pass are required!'
+				});
+			return;
+		}
+
+		// All fields are present, go ahead!
+		console.log('Attempting to login a user!');
+
+		let email = req.body.email;
+		let pass = req.body.pass;
+
+		let query = `SELECT * \nFROM ${tableName}`;
+		query    += `\nWHERE email = '${email}';`;
+
+		dbInstance.one(query)
+			.then(function (data) {
+
+				/*
+				 * Found the user.
+				 * Check if the password matches.
+				 */
+
+				if(bcrypt.compareSync(pass, data.pass)){
+					let token = jwt.sign({email: data.email}, 's3cr3t', {expiresIn: 3600});
+
+					console.log('User found ', data.email);
+					res
+						.status(200)
+						.json({message: 'Login successful', token: token});
+					return;
+				}
+
+				console.log('Password does not match.');
+				res
+					.status(401)
+					.json({message: 'Unauthorized'});
+			})
+			.catch(function (error) {
+
+				if(error.message && error.message === 'No data returned from the query.'){
+
+					console.log('User does not exist!');
+					res
+						.status(400)
+						.json({
+							message: 'User does not exist!'
+						});
+					return;
+				}
+
+				// Log the error and return it as a message as well.
+				console.log(error);
+				res
+					.status(400)
+					.json(error);
+			});
 	}
 };
