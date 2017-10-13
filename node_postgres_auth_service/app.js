@@ -12,7 +12,7 @@
 
 const express    = require('express');
 const path       = require('path');
-const routes     = require('./routes');
+const router     = require('./router');
 const bodyParser = require('body-parser');
 
 const app        = express();
@@ -32,7 +32,7 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use('/users', routes);
+app.use('/api', router);
 
 const server = app.listen(app.get('port'), function(){
 
